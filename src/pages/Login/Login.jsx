@@ -13,9 +13,9 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-800 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Login</h2>
+    <div className="min-h-screen flex items-center justify-center px-2">
+      <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Login</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">

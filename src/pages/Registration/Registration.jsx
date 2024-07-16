@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAxios from "./../../hooks/useAxios";
+import { toast } from "react-toastify";
 
 function Registration() {
   const {
@@ -7,19 +9,37 @@ function Registration() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const axiosInstance = useAxios();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const res = await axiosInstance.post("/users", data);
+      if (res.data.insertedId) {
+        toast.success("Your account created Successfully! Please Login", {
+          position: "top-center",
+        });
+        navigate("/login");
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message, {
+        position: "top-center",
+      });
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-800 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Register</h2>
+    <div className="min-h-screen flex items-center justify-center px-2">
+      <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-2xl">
+        <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">
+          Register
+        </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid grid-cols-1 gap-5 md:grid-cols-2"
+        >
+          <div>
             <label className="block text-gray-700 mb-2" htmlFor="name">
               Name
             </label>
@@ -34,12 +54,12 @@ function Registration() {
             )}
           </div>
 
-          <div className="mb-4 relative">
+          <div>
             <label className="block text-gray-700 mb-2" htmlFor="pin">
               5-digit PIN
             </label>
             <input
-              type={"number"}
+              type="password"
               {...register("pin", {
                 required: true,
                 pattern: /^\d{5}$/,
@@ -53,7 +73,7 @@ function Registration() {
             )}
           </div>
 
-          <div className="mb-4">
+          <div>
             <label className="block text-gray-700 mb-2" htmlFor="mobile">
               Mobile Number
             </label>
@@ -75,27 +95,62 @@ function Registration() {
             )}
           </div>
 
-          <div className="mb-6">
+          <div>
             <label className="block text-gray-700 mb-2" htmlFor="email">
               Email
             </label>
             <input
               type="email"
               id="email"
-              {...register("email", { required: true })}
+              {...register("email", {
+                required: true,
+                pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              })}
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-gray-600"
             />
             {errors.email && (
-              <span className="text-red-500">Email is required</span>
+              <span className="text-red-500">Valid email is required</span>
             )}
           </div>
 
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 focus:outline-none"
-          >
-            Register
-          </button>
+          <div className="md:col-span-2">
+            <fieldset>
+              <legend className="block text-gray-700 mb-2">Register As</legend>
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="user"
+                  defaultChecked
+                  {...register("userType", { required: true })}
+                  value="User"
+                  className="mr-2"
+                />
+                <label htmlFor="user" className="mr-6">
+                  User
+                </label>
+                <input
+                  type="radio"
+                  id="agent"
+                  {...register("userType", { required: true })}
+                  value="Agent"
+                  className="mr-2"
+                />
+                <label htmlFor="agent">Agent</label>
+              </div>
+              {errors.role && (
+                <span className="text-red-500">Please select one role</span>
+              )}
+            </fieldset>
+          </div>
+
+          <div className="md:col-span-2">
+            <button
+              type="submit"
+              className="w-full py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 focus:outline-none"
+            >
+              Register
+            </button>
+          </div>
         </form>
 
         <div className="mt-4 text-center text-gray-600">

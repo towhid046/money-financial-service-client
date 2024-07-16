@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 function Home() {
     return (
-      <div className="min-h-screen bg-gray-800 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+      <div className="min-h-screen  flex items-center justify-center px-2">
+        <div className="bg-white p-8 rounded-lg shadow-2xl flex flex-col justify-center h-[50vh] w-full max-w-md">
           <h2 className="text-2xl font-bold mb-6 text-gray-800">Welcome to MFS App</h2>
           
           <div className="mb-4">
