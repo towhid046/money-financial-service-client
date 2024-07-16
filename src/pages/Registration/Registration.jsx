@@ -121,7 +121,7 @@ function Registration() {
                   type="radio"
                   id="user"
                   defaultChecked
-                  {...register("userType", { required: true })}
+                  {...register("applyFor", { required: true })}
                   value="User"
                   className="mr-2"
                 />
@@ -131,7 +131,7 @@ function Registration() {
                 <input
                   type="radio"
                   id="agent"
-                  {...register("userType", { required: true })}
+                  {...register("applyFor", { required: true })}
                   value="Agent"
                   className="mr-2"
                 />

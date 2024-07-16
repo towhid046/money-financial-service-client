@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
 
 function Login() {
   const {
@@ -8,14 +9,36 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const { logInUser, user } = useAuth();
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    try {
+      await logInUser(data.mobile, data.pin);
+      if (user) {
+        if (user.applyFor === "User") {
+          navigate("/user-dashboard");
+          return;
+        }
+        if (user.applyFor === "Agent") {
+          navigate("/agent-dashboard");
+        }
+        if (user.role === "Admin") {
+          navigate("/admin-dashboard");
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center px-2">
       <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">Login</h2>
+      <h2 className="text-3xl font-bold mb-4 text-gray-800 text-center">Welcome to MFS App</h2>
+        <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">
+          Login
+        </h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
