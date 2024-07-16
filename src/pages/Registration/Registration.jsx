@@ -55,25 +55,6 @@ function Registration() {
           </div>
 
           <div>
-            <label className="block text-gray-700 mb-2" htmlFor="pin">
-              5-digit PIN
-            </label>
-            <input
-              type="password"
-              {...register("pin", {
-                required: true,
-                pattern: /^\d{5}$/,
-                minLength: 5,
-                maxLength: 5,
-              })}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-gray-600"
-            />
-            {errors.pin && (
-              <span className="text-red-500">PIN must be a 5-digit number</span>
-            )}
-          </div>
-
-          <div>
             <label className="block text-gray-700 mb-2" htmlFor="mobile">
               Mobile Number
             </label>
@@ -92,6 +73,24 @@ function Registration() {
               <span className="text-red-500">
                 Mobile number must be 11 digits
               </span>
+            )}
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2" htmlFor="pin">
+              5-digit PIN
+            </label>
+            <input
+              type="password"
+              {...register("pin", {
+                required: true,
+                pattern: /^\d{5}$/,
+                minLength: 5,
+                maxLength: 5,
+              })}
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-gray-600"
+            />
+            {errors.pin && (
+              <span className="text-red-500">PIN must be a 5-digit number</span>
             )}
           </div>
 

@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
+import useAxios from "../../hooks/useAxios";
+import { toast } from "react-toastify";
 
 function Login() {
   const {
@@ -8,34 +10,55 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const { logInUser, user } = useAuth();
+  const axiosInstance = useAxios();
+  const { setUser, setLoading } = useAuth();
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {
-      await logInUser(data.mobile, data.pin);
-      if (user) {
-        if (user.applyFor === "User") {
-          navigate("/user-dashboard");
-          return;
-        }
-        if (user.applyFor === "Agent") {
-          navigate("/agent-dashboard");
-        }
-        if (user.role === "Admin") {
-          navigate("/admin-dashboard");
+      const res = await axiosInstance.get(
+        `/user-login?mobile=${data.mobile}&pin=${data.pin}`
+      );
+      if (res.data.email) {
+        const resp = await axiosInstance.post(
+          "/jwt",
+          { email: res?.data?.email },
+          { withCredentials: true }
+        );
+        if (resp.data.success) {
+          localStorage.setItem("user", JSON.stringify(res.data));
+          setUser(res.data);
+          setLoading(false);
+
+          toast.success("Login Success", {
+            position: "top-center",
+          });
+
+          if (res.data.applyFor === "User") {
+            navigate("/user-dashboard");
+            return;
+          }
+          if (res.data.applyFor === "Agent") {
+            navigate("/agent-dashboard");
+          }
+          if (res.data.role === "Admin") {
+            navigate("/admin-dashboard");
+          }
         }
       }
     } catch (error) {
-      console.log(error.message);
+      toast.error(error?.response?.data?.message, {
+        position: "top-center",
+      });
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center px-2">
       <div className="bg-white p-8 rounded-lg shadow-2xl w-full max-w-md">
-      <h2 className="text-3xl font-bold mb-4 text-gray-800 text-center">Welcome to MFS App</h2>
+        <h2 className="text-3xl font-bold mb-4 text-gray-800 text-center">
+          Welcome to MFS App
+        </h2>
         <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">
           Login
         </h2>

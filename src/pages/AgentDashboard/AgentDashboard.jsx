@@ -1,14 +1,27 @@
 import React from "react";
 import Navbar from "./../../components/shared/Navbar/Navbar";
+import useAuth from "../../hooks/useAuth";
+import useSecureData from "../../hooks/useSecureData";
+import LoadingState from "../../components/shared/LoadingState/LoadingState";
+import PendingUser from "../../components/shared/PendingUser/PendingUser";
 
 const AgentDashboard = () => {
+  const { user, loading } = useAuth();
+
+  const {
+    data: agent,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useSecureData(["single-user"], `/single-user?email=${user?.email}`);
   // Static data
-  const agent = {
-    name: "Alice Johnson",
-    email: "alice.johnson@example.com",
-    mobile: "017XXXXXXXX",
-    balance: 5000,
-  };
+  // const agent = {
+  //   name: "Alice Johnson",
+  //   email: "alice.johnson@example.com",
+  //   mobile: "017XXXXXXXX",
+  //   balance: 5000,
+  // };
 
   const transactions = [
     {
@@ -48,6 +61,14 @@ const AgentDashboard = () => {
     },
   ];
 
+  if (isLoading || loading) {
+    return <LoadingState />;
+  }
+
+  if (agent?.status !== "Active") {
+    return <PendingUser status={agent?.status} />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-2 bg-gray-100 py-12">
       <div className="bg-white p-8 rounded-lg w-full max-w-6xl">
@@ -56,7 +77,7 @@ const AgentDashboard = () => {
           Agent Dashboard
         </p>
         <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">
-          Total Balance: {agent.balance} Taka
+          Total Balance: {agent?.total} Taka
         </h2>
 
         <div className="grid gap-6 grid-cols-1 md:grid-cols-1">
