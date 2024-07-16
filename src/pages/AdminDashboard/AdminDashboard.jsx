@@ -41,13 +41,13 @@ const AdminDashboard = () => {
 
         <div className="mb-6">
           <div className="flex justify-center  mb-4">
-            <div className="border-b w-full"></div>
+            <div className="border-b-2 w-full"></div>
 
             <button
               className={`px-4 py-2 flex items-center min-w-max space-x-2 rounded-t-lg transition duration-500 ${
                 activeTab === "userManagement"
-                  ? "border border-b-0 "
-                  : "border-b"
+                  ? "border-2 border-b-0 "
+                  : "border-b-2"
               }`}
               onClick={() => setActiveTab("userManagement")}
             >
@@ -58,15 +58,15 @@ const AdminDashboard = () => {
             <button
               className={`px-4 py-2 flex items-center min-w-max space-x-2 rounded-t-lg transition duration-500  ${
                 activeTab === "systemMonitoring"
-                  ? "border border-b-0"
-                  : "border-b"
+                  ? "border-2 border-b-0"
+                  : "border-b-2"
               }`}
               onClick={() => setActiveTab("systemMonitoring")}
             >
               <FiMonitor className="inline-block" />
               <span>System Monitoring</span>
             </button>
-            <div className="border-b w-full"></div>
+            <div className="border-b-2 w-full"></div>
           </div>
 
           {activeTab === "userManagement" && <UserManagement />}
