@@ -106,7 +106,7 @@ const UserDashboard = () => {
             </h3>
             <div className="p-4 bg-gray-200 rounded-lg">
               <p className="text-3xl font-bold my-4">
-                <>Balance:</> {singleUser.total} Tk
+                <>Balance:</> {singleUser.total.toFixed(2)} Tk
               </p>
               <p>
                 <>Your Number: </>
@@ -176,7 +176,7 @@ const UserDashboard = () => {
               </div>
 
               {/* Cash Out  */}
-              <CashOut />
+              <CashOut loadSingleUserData={loadSingleUserData} />
             </div>
           </div>
 
@@ -194,19 +194,22 @@ const UserDashboard = () => {
                   <p>No transactions found.</p>
                 ) : (
                   <ul>
-                    {transactions.map((transaction, index) => (
-                      <li key={index} className="mb-2">
-                        <p>
-                          <strong>Amount:</strong> {transaction.amount} Taka
-                        </p>
-                        <p>
-                          <strong>Type:</strong> {transaction.type}
-                        </p>
-                        <p>
-                          <strong>Date:</strong> {transaction.date}
-                        </p>
-                      </li>
-                    ))}
+                    {[...transactions]
+                      ?.reverse()
+                      ?.slice(0, 10)
+                      .map((transaction, index) => (
+                        <li key={index} className="mb-2">
+                          <p>
+                            <strong>Amount:</strong> {transaction.amount} Taka
+                          </p>
+                          <p>
+                            <strong>Type:</strong> {transaction.type}
+                          </p>
+                          <p>
+                            <strong>Date:</strong> {transaction.date}
+                          </p>
+                        </li>
+                      ))}
                   </ul>
                 )}
               </div>

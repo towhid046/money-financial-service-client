@@ -70,7 +70,7 @@ const UserManagement = () => {
           <thead>
             <tr className="border-b">
               <th className="py-2 px-4">Name</th>
-              <th className="py-2 px-4">Email</th>
+              <th className="py-2 px-4">Phone</th>
               <th className="py-2 px-4">Apply'For</th>
               <th className="py-2 px-4">Status</th>
               <th className="py-2 px-4">Actions</th>
@@ -80,7 +80,7 @@ const UserManagement = () => {
             {users.map((user) => (
               <tr key={user._id} className="border-b">
                 <td className="py-2 px-4 min-w-48">{user.name}</td>
-                <td className="py-2 px-4">{user.email}</td>
+                <td className="py-2 px-4">{user.mobile}</td>
                 <td className="py-2 px-4">{user.applyFor}</td>
                 <td className={`py-2 px-4 ${getStatusClass(user.status)}`}>
                   {user.status}

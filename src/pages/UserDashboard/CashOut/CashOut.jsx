@@ -5,11 +5,11 @@ import useAuth from "../../../hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 
-const CashOut = () => {
+const CashOut = ({ loadSingleUserData }) => {
   const { register, handleSubmit, reset } = useForm();
   const { user } = useAuth();
   const axiosInstance = useAxios();
-  const [cashOutLoading, setCashOutLoading] = useState(false)
+  const [cashOutLoading, setCashOutLoading] = useState(false);
 
   const handleCashOut = async (data) => {
     setCashOutLoading(true);
@@ -29,12 +29,13 @@ const CashOut = () => {
       setCashOutLoading(false);
       return;
     }
-
+    const fee = (Number(data.amount) * 1.5) / 100;
     const transaction = {
       ...data,
       date: moment().format("MMMM Do YYYY, h:mm:ss a"),
       type: "Cash Out",
       from: user.mobile,
+      amount: Number(data.amount) + Number(fee),
     };
     try {
       const res = await axiosInstance.post(
@@ -43,12 +44,15 @@ const CashOut = () => {
       );
       if (res?.data.insertedId) {
         toast.info(
-          "Your request have send, your cash out will be success when the agent approve it",
+          `Cash Out Fee: ${
+            (Number(data.amount) * 1.5) / 100
+          } BDT. Your cash out will be success when the agent approve it`,
           {
             position: "top-center",
           }
         );
         reset();
+        loadSingleUserData();
       }
     } catch (error) {
       toast.error(error?.response?.data?.message, {
@@ -100,7 +104,7 @@ const CashOut = () => {
             <label className="block text-gray-700 mb-2">Cash Out</label>
             <input
               type="Submit"
-              defaultValue={cashOutLoading? 'Processing...' : 'Cash Out'}
+              defaultValue={cashOutLoading ? "Processing..." : "Cash Out"}
               className=" px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 w-full"
             />
           </div>
