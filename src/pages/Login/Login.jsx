@@ -11,7 +11,7 @@ function Login() {
     formState: { errors },
   } = useForm();
   const axiosInstance = useAxios();
-  const { setUser, setLoading } = useAuth();
+  const { setUser, setLoading, loading } = useAuth();
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
@@ -50,6 +50,8 @@ function Login() {
       toast.error(error?.response?.data?.message, {
         position: "top-center",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,7 +100,7 @@ function Login() {
             type="submit"
             className="w-full py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 focus:outline-none"
           >
-            Login
+            {loading ? 'Login...' : 'Login'}
           </button>
         </form>
 

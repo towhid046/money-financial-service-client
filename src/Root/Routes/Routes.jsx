@@ -7,6 +7,7 @@ import UserDashboard from "../../pages/UserDashboard/UserDashboard";
 import AgentDashboard from "../../pages/AgentDashboard/AgentDashboard";
 import AdminDashboard from "../../pages/AdminDashboard/AdminDashboard";
 import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage";
+import ProtectedRoute from "./../ProtectedRoute/ProtectedRoute";
 
 const routers = createBrowserRouter([
   {
@@ -28,15 +29,27 @@ const routers = createBrowserRouter([
       },
       {
         path: "/user-dashboard",
-        element: <UserDashboard />,
+        element: (
+          <ProtectedRoute>
+            <UserDashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/agent-dashboard",
-        element: <AgentDashboard />,
+        element: (
+          <ProtectedRoute>
+            <AgentDashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/admin-dashboard",
-        element: <AdminDashboard />,
+        element: (
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
