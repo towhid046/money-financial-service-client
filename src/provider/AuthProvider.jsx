@@ -1,15 +1,22 @@
 import { createContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import useAxios from "../hooks/useAxios";
 
 export const UserContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+  const axiosInstance = useAxios();
 
-  const logOutUser = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+  const logOutUser = async () => {
+    try {
+      setUser(null);
+      localStorage.removeItem("user");
+      await axiosInstance.post("/logout", user);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   // Truck the current user status:

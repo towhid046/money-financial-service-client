@@ -1,9 +1,7 @@
 import LoadingState from "../../../components/shared/LoadingState/LoadingState";
-import useAxios from "../../../hooks/useAxios";
 import useSecureData from "../../../hooks/useSecureData";
 
 const SystemMonitoring = () => {
-  // const axiosInstance = useAxios();
   const {
     data: transactions,
     isLoading,

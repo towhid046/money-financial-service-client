@@ -4,9 +4,16 @@ import { FaUsersGear } from "react-icons/fa6";
 import Navbar from "./../../components/shared/Navbar/Navbar";
 import UserManagement from "./UserManagement/UserManagement";
 import SystemMonitoring from "./SystemMonitoring/SystemMonitoring";
+import useAuth from "../../hooks/useAuth";
+import LoadingState from "../../components/shared/LoadingState/LoadingState";
 
 const AdminDashboard = () => {
+  const { loading } = useAuth();
   const [activeTab, setActiveTab] = useState("userManagement");
+
+  if (loading) {
+    return <LoadingState />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-2 bg-gray-100 py-12">

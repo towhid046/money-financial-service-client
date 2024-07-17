@@ -7,7 +7,8 @@ import UserDashboard from "../../pages/UserDashboard/UserDashboard";
 import AgentDashboard from "../../pages/AgentDashboard/AgentDashboard";
 import AdminDashboard from "../../pages/AdminDashboard/AdminDashboard";
 import NotFoundPage from "../../pages/NotFoundPage/NotFoundPage";
-import ProtectedRoute from "./../ProtectedRoute/ProtectedRoute";
+import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
+import AdminRoute from "./AdminRoute/AdminRoute";
 
 const routers = createBrowserRouter([
   {
@@ -46,9 +47,9 @@ const routers = createBrowserRouter([
       {
         path: "/admin-dashboard",
         element: (
-          <ProtectedRoute>
+          <AdminRoute>
             <AdminDashboard />
-          </ProtectedRoute>
+          </AdminRoute>
         ),
       },
     ],

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import useAxios from "../../hooks/useAxios";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 function Login() {
   const {
@@ -13,8 +14,10 @@ function Login() {
   const axiosInstance = useAxios();
   const { setUser, setLoading, loading } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
       const res = await axiosInstance.get(
         `/user-login?mobile=${data.mobile}&pin=${data.pin}`
@@ -36,10 +39,13 @@ function Login() {
 
           if (res.data.applyFor === "User") {
             navigate("/user-dashboard");
+            setIsLoading(false);
             return;
           }
           if (res.data.applyFor === "Agent") {
             navigate("/agent-dashboard");
+            setIsLoading(false);
+            return;
           }
           if (res.data.role === "Admin") {
             navigate("/admin-dashboard");
@@ -52,6 +58,7 @@ function Login() {
       });
     } finally {
       setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -100,7 +107,7 @@ function Login() {
             type="submit"
             className="w-full py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 focus:outline-none"
           >
-            {loading ? 'Login...' : 'Login'}
+            {isLoading ? "Login..." : "Login"}
           </button>
         </form>
 

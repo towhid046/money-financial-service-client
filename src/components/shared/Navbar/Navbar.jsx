@@ -8,8 +8,8 @@ const Navbar = () => {
   const { user, logOutUser } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogoutUser = () => {
-    logOutUser();
+  const handleLogoutUser = async () => {
+    await logOutUser();
     navigate("/login");
     toast.success("Log Out success!!", {
       position: "top-center",
